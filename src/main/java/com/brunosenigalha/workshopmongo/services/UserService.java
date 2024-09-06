@@ -21,16 +21,39 @@ public class UserService {
         return repository.findAll();
     }
 
-    public User findById(String id){
+    public User findById(String id) {
         Optional<User> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException("Invalid id"));
+        return obj.orElseThrow(() -> new ObjectNotFoundException(id + " Not found"));
     }
 
-    public User insert(User obj){
+    public User insert(User obj) {
         return repository.insert(obj);
     }
 
-    public User fromDTO(UserDTO objDto){
+    public void delete(String id) {
+        User obj = repository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException(id + " Not found"));
+        repository.delete(obj);
+    }
+
+    public User update(User obj){
+        return repository.findById(obj.getId())
+                .map(entity -> {
+                    updateDate(entity, obj);
+                    return repository.save(entity);
+                })
+                .orElseThrow(() -> new ObjectNotFoundException(obj.getId() + " Not found"));
+//        User entity = repository.findById(obj.getId())
+//                .orElseThrow(() -> new ObjectNotFoundException(obj.getId() + " Not found"));
+//
+    }
+
+    public User fromDTO(UserDTO objDto) {
         return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
+    }
+
+    private void updateDate(User entity, User obj){
+        entity.setName(obj.getName());
+        entity.setEmail(obj.getEmail());
     }
 }
