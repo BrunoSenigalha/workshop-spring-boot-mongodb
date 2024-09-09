@@ -5,7 +5,6 @@ import com.brunosenigalha.workshopmongo.dto.UserDTO;
 import com.brunosenigalha.workshopmongo.repositories.UserRepository;
 import com.brunosenigalha.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +35,7 @@ public class UserService {
         repository.delete(obj);
     }
 
-    public User update(User obj){
+    public User update(User obj) {
         return repository.findById(obj.getId())
                 .map(entity -> {
                     updateDate(entity, obj);
@@ -52,7 +51,7 @@ public class UserService {
         return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
     }
 
-    private void updateDate(User entity, User obj){
+    private void updateDate(User entity, User obj) {
         entity.setName(obj.getName());
         entity.setEmail(obj.getEmail());
     }

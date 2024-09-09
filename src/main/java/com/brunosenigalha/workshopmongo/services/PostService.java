@@ -1,0 +1,21 @@
+package com.brunosenigalha.workshopmongo.services;
+
+import com.brunosenigalha.workshopmongo.domain.Post;
+import com.brunosenigalha.workshopmongo.repositories.PostRepository;
+import com.brunosenigalha.workshopmongo.services.exception.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+public class PostService {
+
+    @Autowired
+    private PostRepository repository;
+
+    public Post findById(String id) {
+        Optional<Post> obj = repository.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(id + " Not found"));
+    }
+}
